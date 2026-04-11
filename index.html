@@ -269,19 +269,17 @@ const netOffAd = [
     image: "Kaitori.png",
     categories: ["all"],
     isAd: true,
-    isNetOff: true // ネットオフ専用フラグ
+    isNetOff: true
   }
 ];
 
 // ===== 共通：2番目以降に差し込み =====
 function insertAfterFirst(base, inserts) {
   const result = [...base];
-
   inserts.forEach(item => {
     const index = Math.floor(Math.random() * result.length) + 1;
     result.splice(index, 0, item);
   });
-
   return result;
 }
 
@@ -289,16 +287,14 @@ function insertAfterFirst(base, inserts) {
 function insertPopular(base) {
   const result = [...base];
   const positions = [1, 3, 5, 7];
-
   popularArticles.forEach((item, i) => {
     const index = Math.min(positions[i], result.length);
     result.splice(index, 0, item);
   });
-
   return result;
 }
 
-// ===== RSS取得 =====
+// ===== RSS取得（修正済） =====
 async function fetchRSS() {
   try {
     const res = await fetch(API_URL);
@@ -307,19 +303,19 @@ async function fetchRSS() {
     if (data.status === 'ok') {
       allArticles = data.items.map(item => {
         let img = item.thumbnail;
-
         if (!img && item.content) {
           const match = item.content.match(/<img.*?src="(.*?)"/);
           if (match) img = match[1];
         }
-
         return {
           ...item,
           image: img || 'NoImage.png'
         };
       });
 
-      render(allArticles);
+      // 最初の表示を「最新情報」タブの処理として実行
+      const allBtn = document.querySelector('.tab-btn[onclick*="all"]');
+      filterByKeyword('all', allBtn);
     }
   } catch {
     document.getElementById('article-grid').innerHTML =
@@ -334,7 +330,6 @@ function render(list) {
 
   list.forEach(item => {
     const categories = item.categories || [];
-
     const isGame = categories.some(c => c.includes('ポケモン'));
     const isTravel = categories.some(c => c.includes('遠征'));
     const isOshi = categories.some(c => c.includes('推し活'));
@@ -353,11 +348,9 @@ function render(list) {
         <div class="window-bar" style="background:${color}">
           <div class="dot"></div><div class="dot"></div><div class="dot"></div>
         </div>
-
         <div class="img-space">
           <img src="${item.image}" onerror="this.src='NoImage.png'">
         </div>
-
         <div class="txt-space">
           <span class="badge" style="background:${color}">${tag}</span>
           <h3>${item.title}</h3>
@@ -369,11 +362,13 @@ function render(list) {
 
 // ===== フィルタ =====
 function filterByKeyword(keyword, btn) {
-  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
+  if (btn) {
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+  }
 
   let filtered = keyword === 'all'
-    ? allArticles
+    ? [...allArticles]
     : allArticles.filter(item =>
         item.categories && item.categories.some(c => c.includes(keyword))
       );
@@ -381,13 +376,9 @@ function filterByKeyword(keyword, btn) {
   // ⭐ 最新（all）の時の処理
   if (keyword === 'all') {
     filtered = insertPopular(filtered);
-    
-    // 【重要】最新記事の「2番目」にニンテンドーオンラインを固定
     if (filtered.length >= 2) {
       filtered.splice(1, 0, nintendoOnlineAd[0]); 
     }
-
-    // 【重要】最新記事の「5番目」にネットオフ買取を固定
     if (filtered.length >= 5) {
       filtered.splice(4, 0, netOffAd[0]); 
     }
@@ -397,8 +388,6 @@ function filterByKeyword(keyword, btn) {
   if (keyword === 'ポケモン') {
     filtered = insertPopular(filtered);
     filtered = insertAfterFirst(filtered, toolCards);
-
-    // ポケモンタブには「1番目」にニンテンドーオンラインを固定
     filtered.splice(0, 0, nintendoOnlineAd[0]);
   }
 
@@ -406,7 +395,6 @@ function filterByKeyword(keyword, btn) {
   if (keyword === '遠征') {
     filtered = insertAfterFirst(filtered, travelAds);
   }
-
   if (keyword === '推し活') {
     filtered = insertAfterFirst(filtered, oshiAds);
   }
@@ -415,7 +403,6 @@ function filterByKeyword(keyword, btn) {
 }
 
 fetchRSS();
-
 </script>
 </body>
 </html>
