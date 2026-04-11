@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ゆるっとマイペースに推しごとチュウ</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@900&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg-color: #f5f2eb;      /* 背景ベージュ */
+            --window-purple: #b19cd9; /* 推し活・旅行カラー */
+            --window-yellow: #fdfd96; /* Diaryカラー */
+            --window-green: #b7e4c7;  /* ゲームカラー */
+            --main-black: #1a1a1a;
+            --card-bg: #ffffff;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            font-family: 'Zen Maru Gothic', sans-serif;
+            margin: 0; padding: 20px 10px;
+            color: var(--main-black);
+        }
+
+        .header-area { text-align: center; margin-bottom: 40px; }
+        .site-logo { width: 90%; max-width: 480px; height: auto; }
+
+        .category-nav {
+            display: grid; grid-template-columns: repeat(2, 1fr);
+            gap: 12px; max-width: 440px; margin: 0 auto 40px auto;
+        }
+        .tab-btn {
+            background: var(--card-bg); border: 3px solid var(--main-black);
+            border-radius: 16px; padding: 14px; font-weight: 900;
+            box-shadow: 4px 4px 0px var(--main-black); cursor: pointer;
+            font-family: inherit; transition: 0.1s;
+        }
+        .tab-btn.active { background: var(--window-yellow); transform: translate(2px, 2px); box-shadow: 2px 2px 0px var(--main-black); }
+
+        .article-grid {
+            display: grid; grid-template-columns: repeat(2, 1fr);
+            gap: 15px; max-width: 1000px; margin: 0 auto;
+        }
+
+        .window-card {
+            background: var(--card-bg); border: 3px solid var(--main-black);
+            border-radius: 22px; overflow: hidden; box-shadow: 5px 5px 0px var(--main-black);
+            display: flex; flex-direction: column; text-decoration: none; color: inherit;
+            animation: fadeIn 0.5s ease forwards;
+        }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        .window-bar {
+            border-bottom: 3px solid var(--main-black);
+            padding: 8px 12px; display: flex; justify-content: flex-end; gap: 5px;
+        }
+        .dot { width: 8px; height: 8px; border-radius: 50%; border: 2px solid var(--main-black); background: #fff; }
+
+        .img-space { width: 100%; aspect-ratio: 4 / 3; border-bottom: 3px solid var(--main-black); background: #eee; overflow: hidden; }
+        .img-space img { width: 100%; height: 100%; object-fit: cover; }
+
+        .txt-space { padding: 12px; flex-grow: 1; }
+        .badge {
+            font-size: 0.7rem; font-weight: 900; padding: 3px 10px;
+            border: 2px solid var(--main-black); border-radius: 12px; margin-bottom: 8px;
+            display: inline-block;
+        }
+        .txt-space h3 {
+            margin: 0; font-size: 0.9rem; line-height: 1.5; font-weight: 900;
+            display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+        }
+
+        @media (min-width: 768px) {
+            .article-grid { grid-template-columns: repeat(4, 1fr); }
+            .category-nav { grid-template-columns: repeat(4, 1fr); max-width: 700px; }
+        }
+
+        .status-msg { text-align: center; font-weight: 900; grid-column: 1 / -1; padding: 50px; }
+
+.txt-space h3 {
+  margin: 0;
+  font-size: 0.8rem;
+  line-height: 1.4;
+  font-weight: 900;
+
+  display: -webkit-box;
+  -webkit-line-clamp: 4; /* ←ここがポイント */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* フッターエリアのデザイン */
+footer {
+    margin-top: 60px;
+    padding: 30px 10px;
+    text-align: center;
+    border-top: 3px solid var(--main-black);
+    background-color: #fff; /* 背景を白にして区切りを明確に */
+}
+
+.footer-links {
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    flex-wrap: wrap; /* スマホで折り返るように */
+}
+
+.footer-links a {
+    color: var(--main-black);
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 900;
+    padding: 8px 16px;
+    border: 2px solid var(--main-black);
+    border-radius: 12px;
+    background: var(--bg-color);
+    box-shadow: 3px 3px 0px var(--main-black);
+    transition: 0.1s;
+}
+
+.footer-links a:hover {
+    transform: translate(2px, 2px);
+    box-shadow: 1px 1px 0px var(--main-black);
+}
+
+.copyright {
+    font-size: 0.75rem;
+    color: #666;
+    margin-top: 15px;
+}
+
+</style>
+</head>
+<body>
+
+<header class="header-area">
+    <img src="title.png" alt="ゆるっとマイペースに推しごとチュウ" class="site-logo">
+</header>
+<div style="text-align:center; font-size:12px; margin:20px;">
+  このサイトは「ゆるっとマイペースに推しごとチュウ」のポータルページです。<br>
+  ▶ <a href="https://narunikki.hatenablog.com">ブログ本体はこちら</a>
+</div>
+<nav class="category-nav">
+    <button class="tab-btn active" onclick="filterByKeyword('all', this)">最新記事</button>
+    <button class="tab-btn" onclick="filterByKeyword('遠征', this)">旅行</button>
+    <button class="tab-btn" onclick="filterByKeyword('推し活', this)">推し活</button>
+    <button class="tab-btn" onclick="filterByKeyword('ポケモン', this)">ゲーム</button>
+</nav>
+
+<main class="article-grid" id="article-grid">
+    <div class="status-msg">記事を読み込みチュウ...</div>
+</main>
+
+</main>
+
+<footer>
+    <div class="footer-links">
+        <a href="https://narunikki.hatenablog.com/entry/policy" target="_blank">プライバシーポリシー・免責事項</a>
+        <a href="https://docs.google.com/forms/d/e/1FAIpQLSdh3XOTs_igxl1ZQolkJJW62BNt4CoKgDt18-z3rZMKM019fw/viewform" target="_blank">お問い合わせ</a>
+    </div>
+    <div class="copyright">
+        &copy; 2026 ゆるっとマイペースに推しごとチュウ
+    </div>
+</footer>
+
+<script>
+const BLOG_URL = 'https://narunikki.hatenablog.com/rss';
+const API_URL = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(BLOG_URL)}&_=${Date.now()}`;
+
+let allArticles = [];
+
+// ===== 人気記事 =====
+const popularArticles = [
+  {
+    title: "ピチューが出ない原因はこれ！出し方まとめ",
+    link: "https://narunikki.hatenablog.com/entry/2026/03/16/120000",
+    image: "./pichu.jpeg",
+    categories: ["ポケモン"],
+    isPopular: true
+  },
+  {
+    title: "電気の通し方のコツ！壁や床を貫通させる裏技まとめ",
+    link: "https://narunikki.hatenablog.com/entry/2026/03/12/120000",
+    image: "./denki.jpeg",
+    categories: ["ポケモン"],
+    isPopular: true
+  },
+  {
+    title: "イルミネーションライトは発電力に影響しない？100個以上接続した検証結果",
+    link: "https://narunikki.hatenablog.com/entry/2026/03/25/120000",
+    image: "./irumi.jpeg",
+    categories: ["ポケモン"],
+    isPopular: true
+  },
+  {
+    title: "絵の具を損しない使い方！効率よく塗るコツまとめ",
+    link: "https://narunikki.hatenablog.com/entry/2026/03/23/120000",
+    image: "./enogu.jpg",
+    categories: ["ポケモン"],
+    isPopular: true
+  }
+];
+
+// ===== PR =====
+const travelAds = [
+  {
+    title: "遠征・旅行なら楽天トラベルでお得に予約",
+    link: "https://af.moshimo.com/af/c/click?a_id=5409331&p_id=55&pc_id=55&pl_id=635",
+    image: "airplane.png",
+    categories: ["遠征"],
+    isAd: true
+  },
+  {
+    title: "Yahoo!トラベルでホテル比較",
+    link: "https://ck.jp.ap.valuecommerce.com/servlet/referral?sid=3764505&pid=892591298",
+    image: "airport.png",
+    categories: ["遠征"],
+    isAd: true
+  }
+];
+
+const toolCards = [
+  {
+    title: "ぽこあポケモン図鑑ツール",
+    link: "https://naru08-creator.github.io/naru-pokopia-zukan/",
+    image: "pokoa.png",
+    categories: ["ポケモン"]
+  }
+];
+
+const oshiAds = [
+  {
+    title: "私も使ってる！軽くてよく見える推し活双眼鏡",
+    link: "https://hb.afl.rakuten.co.jp/ichiba/52a6174f.0ba0a7c4.52a61750.b062a46d/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Flachaceshop%2Fnf65xajdzjsmt5sxb64eqzrhqa%2F",
+    image: "https://thumbnail.image.rakuten.co.jp/@0_mall/lachaceshop/cabinet/12227175/33711203_4.jpg",
+    categories: ["推し活"],
+    isAd: true
+  }
+];
+
+// ===== 共通：2番目以降に差し込み =====
+function insertAfterFirst(base, inserts) {
+  const result = [...base];
+
+  inserts.forEach(item => {
+    const index = Math.floor(Math.random() * result.length) + 1;
+    result.splice(index, 0, item);
+  });
+
+  return result;
+}
+
+// ===== 人気記事は固定位置 =====
+function insertPopular(base) {
+  const result = [...base];
+  const positions = [1, 3, 5, 7];
+
+  popularArticles.forEach((item, i) => {
+    const index = Math.min(positions[i], result.length);
+    result.splice(index, 0, item);
+  });
+
+  return result;
+}
+
+// ===== RSS取得 =====
+async function fetchRSS() {
+  try {
+    const res = await fetch(API_URL);
+    const data = await res.json();
+
+    if (data.status === 'ok') {
+      allArticles = data.items.map(item => {
+        let img = item.thumbnail;
+
+        if (!img && item.content) {
+          const match = item.content.match(/<img.*?src="(.*?)"/);
+          if (match) img = match[1];
+        }
+
+        return {
+          ...item,
+          image: img || 'NoImage.png'
+        };
+      });
+
+      render(allArticles);
+    }
+  } catch {
+    document.getElementById('article-grid').innerHTML =
+      '<div class="status-msg">エラー</div>';
+  }
+}
+
+// ===== 描画 =====
+function render(list) {
+  const grid = document.getElementById('article-grid');
+  grid.innerHTML = '';
+
+  list.forEach(item => {
+    const categories = item.categories || [];
+
+    const isGame = categories.some(c => c.includes('ポケモン'));
+    const isTravel = categories.some(c => c.includes('遠征'));
+    const isOshi = categories.some(c => c.includes('推し活'));
+
+    let color = 'var(--window-yellow)';
+    if (isGame) color = 'var(--window-green)';
+    else if (isTravel || isOshi) color = 'var(--window-purple)';
+
+    const tag =
+      item.isAd ? 'PR' :
+      item.isPopular ? '★人気' :
+      (categories[0] || 'DIARY');
+
+    grid.insertAdjacentHTML('beforeend', `
+      <a href="${item.link}" target="_blank" class="window-card">
+        <div class="window-bar" style="background:${color}">
+          <div class="dot"></div><div class="dot"></div><div class="dot"></div>
+        </div>
+
+        <div class="img-space">
+          <img src="${item.image}" onerror="this.src='NoImage.png'">
+        </div>
+
+        <div class="txt-space">
+          <span class="badge" style="background:${color}">${tag}</span>
+          <h3>${item.title}</h3>
+        </div>
+      </a>
+    `);
+  });
+}
+
+// ===== フィルタ =====
+function filterByKeyword(keyword, btn) {
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+
+  let filtered = keyword === 'all'
+    ? allArticles
+    : allArticles.filter(item =>
+        item.categories && item.categories.some(c => c.includes(keyword))
+      );
+
+  // ⭐ 最新にも人気記事入れる
+  if (keyword === 'all') {
+    filtered = insertPopular(filtered);
+  }
+
+  if (keyword === 'ポケモン') {
+    filtered = insertPopular(filtered);
+    filtered = insertAfterFirst(filtered, toolCards);
+  }
+
+  if (keyword === '遠征') {
+    filtered = insertAfterFirst(filtered, travelAds);
+  }
+
+  if (keyword === '推し活') {
+    filtered = insertAfterFirst(filtered, oshiAds);
+  }
+
+  render(filtered);
+}
+
+fetchRSS();
+</script>
+</body>
+</html>
