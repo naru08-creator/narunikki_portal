@@ -252,6 +252,27 @@ const oshiAds = [
   }
 ];
 
+const nintendoOnlineAd = [
+  {
+    title: "【重要】ぽこあでクラウド島に行くならニンテンドーオンライン加入が必須！詳細はこちら",
+    link: "https://hb.afl.rakuten.co.jp/ichiba/52115d6f.24bac8ef.52115d70.1a99eaf4/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Frdownload%2F802550321%2F&link_type=hybrid_url&ut=eyJwYWdlIjoiaXRlbSIsInR5cGUiOiJoeWJyaWRfdXJsIiwic2l6ZSI6IjEwMHgxMDAiLCJuYW0iOjEsIm5hbXAiOiJyaWdodCIsImNvbSI6MSwiY29tcCI6ImRvd24iLCJwcmljZSI6MSwiYm9yIjoxLCJjb2wiOjEsImJidG4iOjEsInByb2QiOjAsImFtcCI6ZmFsc2V9", 
+    image: "GameCard.png", 
+    categories: ["ポケモン"],
+    isAd: true
+  }
+];
+
+const netOffAd = [
+  {
+    title: "【片付け】1,000円から買取OK！本やゲーム、CDをまとめて送ってスッキリ",
+    link: "https://ck.jp.ap.valuecommerce.com/servlet/referral?sid=3767561&pid=892593204", 
+    image: "Kaitori.png",
+    categories: ["all"],
+    isAd: true,
+    isNetOff: true // ネットオフ専用フラグ
+  }
+];
+
 // ===== 共通：2番目以降に差し込み =====
 function insertAfterFirst(base, inserts) {
   const result = [...base];
@@ -357,16 +378,31 @@ function filterByKeyword(keyword, btn) {
         item.categories && item.categories.some(c => c.includes(keyword))
       );
 
-  // ⭐ 最新にも人気記事入れる
+  // ⭐ 最新（all）の時の処理
   if (keyword === 'all') {
     filtered = insertPopular(filtered);
+    
+    // 【重要】最新記事の「2番目」にニンテンドーオンラインを固定
+    if (filtered.length >= 2) {
+      filtered.splice(1, 0, nintendoOnlineAd[0]); 
+    }
+
+    // 【重要】最新記事の「5番目」にネットオフ買取を固定
+    if (filtered.length >= 5) {
+      filtered.splice(4, 0, netOffAd[0]); 
+    }
   }
 
+  // ⭐ ポケモンタブの時の処理
   if (keyword === 'ポケモン') {
     filtered = insertPopular(filtered);
     filtered = insertAfterFirst(filtered, toolCards);
+
+    // ポケモンタブには「1番目」にニンテンドーオンラインを固定
+    filtered.splice(0, 0, nintendoOnlineAd[0]);
   }
 
+  // ⭐ その他のタブ
   if (keyword === '遠征') {
     filtered = insertAfterFirst(filtered, travelAds);
   }
@@ -379,6 +415,7 @@ function filterByKeyword(keyword, btn) {
 }
 
 fetchRSS();
+
 </script>
 </body>
 </html>
