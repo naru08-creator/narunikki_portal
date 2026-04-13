@@ -290,6 +290,28 @@ const netOffAd = [
   }
 ];
 
+// ===== 固定記事（RSSに載らない場合の補完） =====
+const fixedArticles = [
+  {
+    title: "空港ラウンジはゴールドカードで使える？母娘遠征でのリアル体験談",
+    link: "https://narunikki.hatenablog.com/entry/2026/03/31/200000",
+    image: "https://cdn-ak.f.st-hatena.com/images/fotolife/e/erupyon/20260304/20260304120505.png",
+    categories: ["推し活遠征ログ"]
+  },
+  {
+    title: "【地方民の遠征術】飛行機予約はどこでする？安さより「体調と安心」を優先する私のマイルール",
+    link: "https://narunikki.hatenablog.com/entry/2026/03/24/200000",
+    image: "https://cdn-ak.f.st-hatena.com/images/fotolife/e/erupyon/20260304/20260304135315.png",
+    categories: ["推し活遠征ログ"]
+  },
+  {
+    title: "母娘遠征のホテル選び｜安心・コスパ・立地で選ぶ私の基準",
+    link: "https://narunikki.hatenablog.com/entry/2026/03/19/200000",
+    image: "https://cdn-ak.f.st-hatena.com/images/fotolife/e/erupyon/20260304/20260304120505.png",
+    categories: ["推し活遠征ログ"]
+  }
+];
+
 // ===== 共通：2番目以降に差し込み =====
 function insertAfterFirst(base, inserts) {
   const result = [...base];
@@ -329,6 +351,9 @@ async function fetchRSS() {
           image: img || 'NoImage.png'
         };
       });
+
+// RSS取得後に固定記事を追加
+allArticles = [...allArticles, ...fixedArticles];
 
       // 最初の表示を「最新情報」タブの処理として実行
       const allBtn = document.querySelector('.tab-btn[onclick*="all"]');
