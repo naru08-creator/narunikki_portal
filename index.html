@@ -200,6 +200,38 @@ const API_URL = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURICompone
 
 let allArticles = [];
 
+function isHatenaAutoEyecatch(url) {
+  if (!url) return false;
+
+  try {
+    const parsed = new URL(url, window.location.href);
+    const host = parsed.hostname;
+    const path = parsed.pathname;
+
+    return host === 'ogimage.blog.st-hatena.com' ||
+      path.includes('/images/og-image') ||
+      path.includes('/images/entry-image');
+  } catch {
+    return false;
+  }
+}
+
+function resolveArticleImage(item) {
+  const enclosureImage = item.enclosure && item.enclosure.link
+    ? item.enclosure.link
+    : '';
+
+  if (enclosureImage && !isHatenaAutoEyecatch(enclosureImage)) {
+    return enclosureImage;
+  }
+
+  if (item.thumbnail && !isHatenaAutoEyecatch(item.thumbnail)) {
+    return item.thumbnail;
+  }
+
+  return 'NoImage.png';
+}
+
 // ===== 人気記事 =====
 const popularArticles = [
   {
@@ -341,14 +373,9 @@ async function fetchRSS() {
 
     if (data.status === 'ok') {
       allArticles = data.items.map(item => {
-        let img = item.thumbnail;
-        if (!img && item.content) {
-          const match = item.content.match(/<img.*?src="(.*?)"/);
-          if (match) img = match[1];
-        }
         return {
           ...item,
-          image: img || 'NoImage.png'
+          image: resolveArticleImage(item)
         };
       });
 
@@ -391,7 +418,7 @@ function render(list) {
           <div class="dot"></div><div class="dot"></div><div class="dot"></div>
         </div>
         <div class="img-space">
-          <img src="${item.image}" onerror="this.src='NoImage.png'">
+          <img src="${item.image}" onerror="this.onerror=null;this.src='NoImage.png'">
         </div>
         <div class="txt-space">
           <span class="badge" style="background:${color}">${tag}</span>
