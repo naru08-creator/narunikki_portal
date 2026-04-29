@@ -221,8 +221,10 @@ function resolveArticleImage(item) {
     ? item.enclosure.link
     : '';
 
-  if (enclosureImage && !isHatenaAutoEyecatch(enclosureImage)) {
-    return enclosureImage;
+  if (enclosureImage) {
+    return isHatenaAutoEyecatch(enclosureImage)
+      ? 'NoImage.png'
+      : enclosureImage;
   }
 
   if (item.thumbnail && !isHatenaAutoEyecatch(item.thumbnail)) {
