@@ -11,6 +11,7 @@
   }
   </script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="はてなブログ「ゆるっとマイペースに推しごとチュウ」の記事を、旅行・推し活・ゲームのカテゴリ別に見やすくまとめたポータルサイトです。">
     <title>ゆるっとマイペースに推しごとチュウ</title>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -182,12 +183,10 @@ footer {
     <div class="status-msg">記事を読み込みチュウ...</div>
 </main>
 
-</main>
-
 <footer>
     <div class="footer-links">
-        <a href="https://narunikki.hatenablog.com/entry/policy" target="_blank">プライバシーポリシー・免責事項</a>
-        <a href="https://docs.google.com/forms/d/e/1FAIpQLSdh3XOTs_igxl1ZQolkJJW62BNt4CoKgDt18-z3rZMKM019fw/viewform" target="_blank">お問い合わせ</a>
+        <a href="https://narunikki.hatenablog.com/entry/policy" target="_blank" rel="noopener noreferrer">プライバシーポリシー・免責事項</a>
+        <a href="https://docs.google.com/forms/d/e/1FAIpQLSdh3XOTs_igxl1ZQolkJJW62BNt4CoKgDt18-z3rZMKM019fw/viewform" target="_blank" rel="noopener noreferrer">お問い合わせ</a>
     </div>
     <div class="copyright">
         &copy; 2026 ゆるっとマイペースに推しごとチュウ
@@ -415,12 +414,12 @@ function render(list) {
       (categories[0] || 'DIARY');
 
     grid.insertAdjacentHTML('beforeend', `
-      <a href="${item.link}" target="_blank" class="window-card">
+      <a href="${item.link}" target="_blank" rel="noopener noreferrer" class="window-card">
         <div class="window-bar" style="background:${color}">
           <div class="dot"></div><div class="dot"></div><div class="dot"></div>
         </div>
         <div class="img-space">
-          <img src="${item.image}" onerror="this.onerror=null;this.src='NoImage.png'">
+          <img src="${item.image}" alt="${item.title}" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='NoImage.png'">
         </div>
         <div class="txt-space">
           <span class="badge" style="background:${color}">${tag}</span>
