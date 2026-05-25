@@ -3,6 +3,10 @@
 
 # ゆるっとマイペースに推しごとチュウ ポータルサイト
 
+![Portal](https://img.shields.io/badge/Portal-Tools%20Hub-pink)
+![RSS](https://img.shields.io/badge/RSS-Enabled-lightblue)
+![AI](https://img.shields.io/badge/AI-Assisted-green)
+
 ブログ「ゆるっとマイペースに推しごとチュウ」の記事を、カテゴリ別に見やすく整理するために制作したポータルサイトです。  
 はてなブログのRSSを取得し、最新記事をカード形式で一覧表示できるようにしています。
 
