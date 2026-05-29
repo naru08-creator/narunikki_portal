@@ -32,6 +32,7 @@
             --window-purple: #b19cd9; /* 推し活・旅行カラー */
             --window-yellow: #fdfd96; /* Diaryカラー */
             --window-green: #b7e4c7;  /* ゲームカラー */
+            --window-pink: #ffd6e7; /* 制作ログ　*/
             --main-black: #1a1a1a;
             --card-bg: #ffffff;
         }
@@ -177,6 +178,7 @@ footer {
     <button class="tab-btn" onclick="filterByKeyword('遠征', this)">旅行</button>
     <button class="tab-btn" onclick="filterByKeyword('推し活', this)">推し活</button>
     <button class="tab-btn" onclick="filterByKeyword('ポケモン', this)">ゲーム</button>
+    <button class="tab-btn" onclick="filterByKeyword('制作ログ', this)">制作ログ</button>
 </nav>
 
 <main class="article-grid" id="article-grid">
@@ -196,8 +198,12 @@ footer {
 <script>
 const BLOG_URL = 'https://narunikki.hatenablog.com/rss';
 const API_URL = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(BLOG_URL)}&_=${Date.now()}`;
+// ===== note RSS取得 =====
+const NOTE_URL = 'https://note.com/naru08_creator/rss';
+const NOTE_API_URL = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(NOTE_URL)}&_=${Date.now()}`;
 
 let allArticles = [];
+let noteArticles = [];
 
 function isHatenaAutoEyecatch(url) {
   if (!url) return false;
@@ -383,6 +389,36 @@ async function fetchRSS() {
 // RSS取得後に固定記事を追加
 allArticles = [...allArticles, ...fixedArticles];
 
+// ===== note RSS取得 =====
+const noteRes = await fetch(NOTE_API_URL);
+const noteData = await noteRes.json();
+
+console.log(noteData.items[0]);
+if (noteData.status === 'ok') {
+
+noteArticles = noteData.items.map(item => {
+
+// デフォルト画像
+let image = 'NoImage.png';
+
+// タイトルで分岐
+if (item.title.includes('めんどくさがり')) {
+  image = 'mendokusagari.png';
+
+} else if (item.title.includes('深夜妄想録')) {
+  image = 'shinya.png';
+}
+
+return {
+  title: item.title,
+  link: item.link,
+ image: image,
+  categories: ['制作ログ']
+};
+
+});
+}
+
       // 最初の表示を「最新情報」タブの処理として実行
       const allBtn = document.querySelector('.tab-btn[onclick*="all"]');
       filterByKeyword('all', allBtn);
@@ -403,10 +439,12 @@ function render(list) {
     const isGame = categories.some(c => c.includes('ポケモン'));
     const isTravel = categories.some(c => c.includes('遠征'));
     const isOshi = categories.some(c => c.includes('推し活'));
+    const isCreator = categories.some(c => c.includes('制作ログ'));
 
     let color = 'var(--window-yellow)';
     if (isGame) color = 'var(--window-green)';
     else if (isTravel || isOshi) color = 'var(--window-purple)';
+    else if (isCreator) color = 'var(--window-pink)';
 
     const tag =
       item.isAd ? 'PR' :
@@ -437,11 +475,19 @@ function filterByKeyword(keyword, btn) {
     btn.classList.add('active');
   }
 
-  let filtered = keyword === 'all'
-    ? [...allArticles]
-    : allArticles.filter(item =>
-        item.categories && item.categories.some(c => c.includes(keyword))
-      );
+  let filtered = [];
+
+if (keyword === 'all') {
+  filtered = [...allArticles];
+
+} else if (keyword === '制作ログ') {
+  filtered = [...noteArticles];
+
+} else {
+  filtered = allArticles.filter(item =>
+    item.categories && item.categories.some(c => c.includes(keyword))
+  );
+}
 
   // ⭐ 最新（all）の時の処理
   if (keyword === 'all') {
