@@ -50,3 +50,18 @@ const recommendItems = [
   isAffiliate: true
 },
 ];
+
+  /*
+  ===== 商品追加テンプレ =====
+  {
+    title: "商品名",
+    link: "アフィリエイトリンク",
+    image: "商品画像URL",
+    categories: ["おすすめ"],
+    details: "おすすめポイント",
+    shopLabel: "ショップ名で見る",
+    isRecommend: true,
+    isAffiliate: true
+  },
+  */
+];

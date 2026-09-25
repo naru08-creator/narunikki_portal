@@ -818,10 +818,10 @@ function openRecommendModal(item) {
   if (item.shopLinks && item.shopLinks.length > 0) {
     links.innerHTML = item.shopLinks.map(shop => `
       <a
-        href="${shop.url}"
-        target="_blank"
-        rel="noopener noreferrer"
-        class="recommend-shop-btn"
+      href="${shop.url}"
+      target="_blank"
+      rel="nofollow sponsored noopener noreferrer"
+      class="recommend-shop-btn"
       >
         ${shop.label}
       </a>
@@ -831,7 +831,7 @@ function openRecommendModal(item) {
       <a
         href="${item.link}"
         target="_blank"
-        rel="noopener noreferrer"
+        rel="nofollow sponsored noopener noreferrer"
         class="recommend-shop-btn"
       >
     ${item.shopLabel || '商品を見る'}
