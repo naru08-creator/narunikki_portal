@@ -64,4 +64,3 @@ const recommendItems = [
     isAffiliate: true
   },
   */
-];
