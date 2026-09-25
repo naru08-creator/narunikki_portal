@@ -33,6 +33,7 @@
             --window-yellow: #fdfd96; /* Diaryカラー */
             --window-green: #b7e4c7;  /* ゲームカラー */
             --window-pink: #ffd6e7; /* 制作ログ　*/
+            --window-blue: #bde0fe; /* おすすめ　*/
             --main-black: #1a1a1a;
             --card-bg: #ffffff;
         }
@@ -48,10 +49,13 @@
         .site-logo { width: 90%; max-width: 480px; height: auto; }
 
         .category-nav {
-            display: grid; grid-template-columns: repeat(2, 1fr);
-            gap: 12px; max-width: 440px; margin: 0 auto 40px auto;
-        }
-.tab-btn {
+           display: grid;
+           grid-template-columns: repeat(2, minmax(0, 1fr));
+           gap: 12px;
+           max-width: 440px;
+           margin: 0 auto 40px auto;
+       }
+        .tab-btn {
             background: var(--card-bg); border: 3px solid var(--main-black);
             border-radius: 16px; padding: 14px; font-weight: 900;
             box-shadow: 4px 4px 0px var(--main-black); cursor: pointer;
@@ -102,10 +106,16 @@
             display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
         }
 
-        @media (min-width: 768px) {
-            .article-grid { grid-template-columns: repeat(4, 1fr); }
-            .category-nav { grid-template-columns: repeat(4, 1fr); max-width: 700px; }
-        }
+       @media (min-width: 768px) {
+           .article-grid {
+               grid-template-columns: repeat(4, 1fr);
+           }
+
+           .category-nav {
+               grid-template-columns: repeat(3, minmax(0, 1fr));
+               max-width: 700px;
+            }
+       }
 
         .status-msg { text-align: center; font-weight: 900; grid-column: 1 / -1; padding: 50px; }
 
@@ -162,6 +172,197 @@ footer {
     margin-top: 15px;
 }
 
+.recommend-card .img-space img {
+    object-fit: contain;
+}
+
+.recommend-subnav {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin: -25px auto 30px auto;
+    flex-wrap: wrap;
+}
+
+.recommend-sub-btn {
+    background: #fff;
+    border: 2px solid var(--main-black);
+    border-radius: 10px;
+    padding: 7px 16px;
+    font-family: inherit;
+    font-size: 0.8rem;
+    font-weight: 900;
+    color: var(--main-black);
+    cursor: pointer;
+    box-shadow: 2px 2px 0 var(--main-black);
+}
+
+.recommend-sub-btn.active {
+    background: var(--window-blue);
+    transform: translate(1px, 1px);
+    box-shadow: 1px 1px 0 var(--main-black);
+}
+
+/* ===== おすすめ商品 詳細モーダル ===== */
+
+.recommend-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.recommend-modal-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+}
+
+.recommend-modal-window {
+  position: relative;
+  z-index: 1;
+  width: min(700px, 100%);
+  max-height: 90vh;
+  overflow-y: auto;
+  overflow-x: hidden;
+  scrollbar-gutter: stable;
+  scrollbar-color: transparent transparent;
+  background: #fff;
+  border: 3px solid var(--main-black);
+  border-radius: 22px;
+  box-shadow: 8px 8px 0 var(--main-black);
+}
+
+.recommend-modal-close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 2;
+  width: 38px;
+  height: 38px;
+  border: 2px solid var(--main-black);
+  border-radius: 50%;
+  background: #fff;
+  font-size: 1.5rem;
+  font-weight: 900;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.recommend-modal-image {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  background: #f3f3f3;
+  border-bottom: 3px solid var(--main-black);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.recommend-modal-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.recommend-modal-content {
+  padding: 24px;
+}
+
+.recommend-modal-content h2 {
+  margin: 12px 0;
+  font-size: 1.4rem;
+}
+
+.recommend-modal-content p {
+  margin: 0 0 18px;
+  line-height: 1.8;
+  white-space: pre-line;
+}
+
+.affiliate-notice {
+  margin: 8px 0;
+  padding: 0;
+  background: none;
+  border: none;
+  border-radius: 0;
+  font-size: 0.65rem;
+  color: #999;
+}
+
+.recommend-modal-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.recommend-shop-btn {
+  display: inline-block;
+  padding: 11px 18px;
+  border: 2px solid var(--main-black);
+  border-radius: 10px;
+  background: var(--window-blue);
+  color: var(--main-black);
+  font-weight: 900;
+  text-decoration: none;
+  box-shadow: 3px 3px 0 var(--main-black);
+}
+
+.recommend-shop-btn:hover {
+  transform: translate(2px, 2px);
+  box-shadow: 1px 1px 0 var(--main-black);
+}
+
+@media (max-width: 600px) {
+  .recommend-modal {
+    padding: 12px;
+  }
+
+  .recommend-modal-window {
+    max-height: 92vh;
+    border-radius: 16px;
+  }
+
+  .recommend-modal-content {
+    padding: 18px;
+  }
+
+  .recommend-modal-content h2 {
+    font-size: 1.2rem;
+  }
+
+  .recommend-shop-btn {
+    width: 100%;
+    text-align: center;
+  }
+}
+
+@media (min-width: 601px) {
+
+.recommend-modal-window::-webkit-scrollbar {
+  width: 8px;
+  background: transparent;
+}
+
+.recommend-modal-window::-webkit-scrollbar-track {
+  background: transparent;
+  border: none;
+}
+
+.recommend-modal-window::-webkit-scrollbar-thumb {
+  background: transparent;
+  border: none;
+}
+
+.recommend-modal-window::-webkit-scrollbar-button {
+  display: none;
+}
+}
 </style>
 </head>
 <body>
@@ -179,11 +380,45 @@ footer {
     <button class="tab-btn" onclick="filterByKeyword('推し活', this)">推し活</button>
     <button class="tab-btn" onclick="filterByKeyword('ポケモン', this)">ゲーム</button>
     <button class="tab-btn" onclick="filterByKeyword('制作ログ', this)">制作ログ</button>
+    <button class="tab-btn" onclick="filterByKeyword('おすすめ', this)">🛍️ おすすめ</button>
 </nav>
+
+<div id="recommend-subnav" class="recommend-subnav" style="display:none;">
+    <button class="recommend-sub-btn active" onclick="filterRecommend('all', this)">すべて</button>
+    <button class="recommend-sub-btn" onclick="filterRecommend('旅行', this)">旅行</button>
+    <button class="recommend-sub-btn" onclick="filterRecommend('推し活', this)">推し活</button>
+</div>
 
 <main class="article-grid" id="article-grid">
     <div class="status-msg">記事を読み込みチュウ...</div>
 </main>
+
+<!-- おすすめ商品 詳細モーダル -->
+<div id="recommend-modal" class="recommend-modal" style="display:none;">
+  <div class="recommend-modal-overlay" onclick="closeRecommendModal()"></div>
+
+  <div class="recommend-modal-window">
+    <button class="recommend-modal-close" onclick="closeRecommendModal()">×</button>
+
+    <div class="recommend-modal-image">
+      <img id="recommend-modal-img" src="" alt="">
+    </div>
+
+    <div class="recommend-modal-content">
+      <span id="recommend-modal-badge" class="badge">おすすめ</span>
+
+      <h2 id="recommend-modal-title"></h2>
+
+      <p id="recommend-modal-description"></p>
+
+      <div id="recommend-modal-pr" class="affiliate-notice" style="display:none;">
+        PR｜アフィリエイト広告を利用しています
+      </div>
+
+      <div id="recommend-modal-links" class="recommend-modal-links"></div>
+    </div>
+  </div>
+</div>
 
 <footer>
     <div class="footer-links">
@@ -440,36 +675,57 @@ function render(list) {
     const isTravel = categories.some(c => c.includes('遠征'));
     const isOshi = categories.some(c => c.includes('推し活'));
     const isCreator = categories.some(c => c.includes('制作ログ'));
+    const isRecommend = categories.some(c => c.includes('おすすめ'));
 
     let color = 'var(--window-yellow)';
     if (isGame) color = 'var(--window-green)';
     else if (isTravel || isOshi) color = 'var(--window-purple)';
     else if (isCreator) color = 'var(--window-pink)';
-
+    else if (isRecommend) color = 'var(--window-blue)';
     const tag =
       item.isAd ? 'PR' :
+       item.isRecommend ? 'おすすめ' :
       item.isPopular ? '★人気' :
       (categories[0] || 'DIARY');
 
-    grid.insertAdjacentHTML('beforeend', `
-      <a href="${item.link}" target="_blank" rel="noopener noreferrer" class="window-card">
-        <div class="window-bar" style="background:${color}">
-          <div class="dot"></div><div class="dot"></div><div class="dot"></div>
-        </div>
-        <div class="img-space">
-          <img src="${item.image}" alt="${item.title}" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='NoImage.png'">
-        </div>
-        <div class="txt-space">
-          <span class="badge" style="background:${color}">${tag}</span>
-          <h3>${item.title}</h3>
-        </div>
-      </a>
-    `);
+grid.insertAdjacentHTML('beforeend', `
+  <div
+    class="window-card ${item.isRecommend ? 'recommend-card' : ''}"
+    ${item.isRecommend ? `onclick="openRecommendModal(${JSON.stringify(item).replace(/"/g, '&quot;')})"` : ''}
+  >
+    <div class="window-bar" style="background:${color}">
+      <div class="dot"></div><div class="dot"></div><div class="dot"></div>
+    </div>
+
+    <div class="img-space">
+      <img
+        src="${item.image}"
+        alt="${item.title}"
+        loading="lazy"
+        decoding="async"
+        onerror="this.onerror=null;this.src='NoImage.png'"
+      >
+    </div>
+
+    <div class="txt-space">
+      <span class="badge" style="background:${color}">${tag}</span>
+      <h3>${item.title}</h3>
+    </div>
+  </div>
+`);
   });
 }
 
 // ===== フィルタ =====
 function filterByKeyword(keyword, btn) {
+  const recommendSubnav = document.getElementById('recommend-subnav');
+
+  // おすすめタブのときだけ小カテゴリーを表示
+  if (recommendSubnav) {
+    recommendSubnav.style.display =
+      keyword === 'おすすめ' ? 'flex' : 'none';
+  }
+
   if (btn) {
     document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
@@ -477,26 +733,31 @@ function filterByKeyword(keyword, btn) {
 
   let filtered = [];
 
-if (keyword === 'all') {
-  filtered = [...allArticles];
+  if (keyword === 'all') {
+    filtered = [...allArticles];
 
-} else if (keyword === '制作ログ') {
-  filtered = [...noteArticles];
+  } else if (keyword === '制作ログ') {
+    filtered = [...noteArticles];
 
-} else {
-  filtered = allArticles.filter(item =>
-    item.categories && item.categories.some(c => c.includes(keyword))
-  );
-}
+  } else if (keyword === 'おすすめ') {
+    filtered = [...recommendItems];
+
+  } else {
+    filtered = allArticles.filter(item =>
+      item.categories && item.categories.some(c => c.includes(keyword))
+    );
+  }
 
   // ⭐ 最新（all）の時の処理
   if (keyword === 'all') {
     filtered = insertPopular(filtered);
+
     if (filtered.length >= 2) {
-      filtered.splice(1, 0, nintendoOnlineAd[0]); 
+      filtered.splice(1, 0, nintendoOnlineAd[0]);
     }
+
     if (filtered.length >= 5) {
-      filtered.splice(4, 0, netOffAd[0]); 
+      filtered.splice(4, 0, netOffAd[0]);
     }
   }
 
@@ -511,6 +772,7 @@ if (keyword === 'all') {
   if (keyword === '遠征') {
     filtered = insertAfterFirst(filtered, travelAds);
   }
+
   if (keyword === '推し活') {
     filtered = insertAfterFirst(filtered, oshiAds);
   }
@@ -518,6 +780,80 @@ if (keyword === 'all') {
   render(filtered);
 }
 
+// ===== おすすめ小カテゴリー =====
+function filterRecommend(keyword, btn) {
+  document.querySelectorAll('.recommend-sub-btn').forEach(b => {
+    b.classList.remove('active');
+  });
+
+  btn.classList.add('active');
+
+  let filtered;
+
+  if (keyword === 'all') {
+    filtered = [...recommendItems];
+  } else {
+    filtered = recommendItems.filter(item =>
+      item.categories && item.categories.includes(keyword)
+    );
+  }
+
+  render(filtered);
+}
+
+function openRecommendModal(item) {
+  document.getElementById('recommend-modal-img').src = item.image;
+  document.getElementById('recommend-modal-img').alt = item.title;
+  document.getElementById('recommend-modal-title').textContent = item.title;
+  document.getElementById('recommend-modal-description').textContent =
+    item.details || '';
+
+  // アフィリエイト表記
+  const pr = document.getElementById('recommend-modal-pr');
+  pr.style.display = item.isAffiliate ? 'block' : 'none';
+
+  // 購入リンク
+  const links = document.getElementById('recommend-modal-links');
+
+  if (item.shopLinks && item.shopLinks.length > 0) {
+    links.innerHTML = item.shopLinks.map(shop => `
+      <a
+        href="${shop.url}"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="recommend-shop-btn"
+      >
+        ${shop.label}
+      </a>
+    `).join('');
+  } else if (item.link) {
+    links.innerHTML = `
+      <a
+        href="${item.link}"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="recommend-shop-btn"
+      >
+    ${item.shopLabel || '商品を見る'}
+      </a>
+    `;
+  } else {
+    links.innerHTML = '';
+  }
+
+  document.getElementById('recommend-modal').style.display = 'flex';
+  document.body.style.overflow = 'hidden';
+}
+
+function closeRecommendModal() {
+  document.getElementById('recommend-modal').style.display = 'none';
+  document.body.style.overflow = '';
+}
+</script>
+
+<script src="recommend.js"></script>
+
+<script>
 fetchRSS();
 </script>
 </body>
