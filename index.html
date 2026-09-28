@@ -717,47 +717,55 @@ function render(list) {
     const isTravel = categories.some(c => c.includes('遠征'));
     const isOshi = categories.some(c => c.includes('推し活'));
     const isCreator = categories.some(c => c.includes('制作ログ'));
-    const isRecommend = categories.some(c => c.includes('おすすめ'));
+    const isRecommend = categories.some(c => c.includes('おすすめ')) || item.isRecommend;
 
     let color = 'var(--window-yellow)';
     if (isGame) color = 'var(--window-green)';
     else if (isTravel || isOshi) color = 'var(--window-purple)';
     else if (isCreator) color = 'var(--window-pink)';
     else if (isRecommend) color = 'var(--window-blue)';
+    
     const tag =
       item.isAd ? 'PR' :
-       item.isRecommend ? 'おすすめ' :
+      isRecommend ? 'おすすめ' :
       item.isPopular ? '★人気' :
       (categories[0] || 'DIARY');
 
-grid.insertAdjacentHTML('beforeend', `
-  <div
-    class="window-card ${item.isRecommend ? 'recommend-card' : ''}"
-    ${item.isRecommend ? `onclick="openRecommendModal(${JSON.stringify(item).replace(/"/g, '&quot;')})"` : ''}
-  >
-    <div class="window-bar" style="background:${color}">
-      <div class="dot"></div><div class="dot"></div><div class="dot"></div>
-    </div>
+    let clickAction = '';
+    if (isRecommend) {
+      clickAction = `onclick="openRecommendModal(${JSON.stringify(item).replace(/"/g, '&quot;')})"`;
+    } else if (item.link) {
+      clickAction = `onclick="window.location.href='${item.link}'"`;
+    }
 
-    <div class="img-space">
-      <img
-        src="${item.image}"
-        alt="${item.title}"
-        loading="lazy"
-        decoding="async"
-        onerror="this.onerror=null;this.src='NoImage.png'"
+    grid.insertAdjacentHTML('beforeend', `
+      <div
+        class="window-card ${isRecommend ? 'recommend-card' : ''}"
+        ${clickAction}
+        style="${item.link || isRecommend ? 'cursor: pointer;' : ''}"
       >
-    </div>
+        <div class="window-bar" style="background:${color}">
+          <div class="dot"></div><div class="dot"></div><div class="dot"></div>
+        </div>
 
-    <div class="txt-space">
-      <span class="badge" style="background:${color}">${tag}</span>
-      <h3>${item.title}</h3>
-    </div>
-  </div>
-`);
+        <div class="img-space">
+          <img
+            src="${item.image}"
+            alt="${item.title}"
+            loading="lazy"
+            decoding="async"
+            onerror="this.onerror=null;this.src='NoImage.png'"
+          >
+        </div>
+
+        <div class="txt-space">
+          <span class="badge" style="background:${color}">${tag}</span>
+          <h3>${item.title}</h3>
+        </div>
+      </div>
+    `);
   });
 }
-
 // ===== フィルタ =====
 function filterByKeyword(keyword, btn) {
   const recommendSubnav = document.getElementById('recommend-subnav');
