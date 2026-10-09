@@ -789,7 +789,7 @@ function render(list) {
 
         <div class="img-space">
           <img
-            src="${item.image}"
+            src="${item.image || 'NoImage.png'}"
             alt="${item.title}"
             loading="lazy"
             decoding="async"
@@ -893,7 +893,7 @@ function filterRecommend(keyword, btn) {
 }
 
 function openRecommendModal(item) {
-  document.getElementById('recommend-modal-img').src = item.image;
+  document.getElementById('recommend-modal-img').src = item.image || 'NoImage.png';
   document.getElementById('recommend-modal-img').alt = item.title;
   document.getElementById('recommend-modal-title').textContent = item.title;
   document.getElementById('recommend-modal-description').textContent =
