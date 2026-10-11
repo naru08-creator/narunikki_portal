@@ -517,22 +517,22 @@ const popularArticles = [
 const travelAds = [
   {
     title: "遠征・旅行なら楽天トラベルでお得に予約",
-    link: "https://af.moshimo.com/af/c/click?a_id=5409331&p_id=55&pc_id=55&pl_id=635",
+    link: "//af.moshimo.com/af/c/click?a_id=5815316&p_id=55&pc_id=55&pl_id=629",
     image: "rakuten.png",
     categories: ["遠征"],
     isAd: true
   },
   {
     title: "旅行行くならじゃらんでお得に予約",
-    link: "https://px.a8.net/svt/ejp?a8mat=4BCMO1+5EOSD6+14CS+6DJW1",
+    link: "https://px.a8.net/svt/ejp?a8mat=4BCMO1+5EOT4Y+14CS+6GZCH",
     image: "jalan.png",
     categories: ["遠征"],
     isAd: true
   },
   {
     title: "Yahoo!トラベルでホテル比較",
-    link: "https://px.a8.net/svt/ejp?a8mat=4BCMO1+5FA7YY+4ZCO+5YRHE",
-    image: "https://www26.a8.net/svt/bgt?aid=260929729328&wid=002&eno=01&mid=s00000023244001127000&mc=1",
+    link: "https://px.a8.net/svt/ejp?a8mat=4BCMO1+5FA8QQ+4ZCO+6PJZL",
+    image: "https://www22.a8.net/svt/bgt?aid=260929729328&wid=003&eno=01&mid=s00000023244001127000&mc=1",
     categories: ["遠征"],
     isAd: true
   }
@@ -559,14 +559,14 @@ const nintendoOnlineAd = [
   }
 ];
 
-const netOffAd = [
+const bookOffAd = [
   {
-    title: "【片付け】1,000円から買取OK！本やゲーム、CDをまとめて送ってスッキリ",
-    link: "https://ck.jp.ap.valuecommerce.com/servlet/referral?sid=3767561&pid=892593204", 
-    image: "Kaitori.png",
+    title: "【片付け】送料手数料0円！本やゲーム、CDをまとめて送ってスッキリ",
+    link: "https://px.a8.net/svt/ejp?a8mat=4BEE15+ZQ2MA+3NFE+63WO1", 
+    image: "https://www21.a8.net/svt/bgt?aid=261011849060&wid=003&eno=01&mid=s00000017033001026000&mc=1",
     categories: ["all"],
     isAd: true,
-    isNetOff: true
+    isBookOff: true
   }
 ];
 
@@ -848,7 +848,7 @@ function filterByKeyword(keyword, btn) {
     }
 
     if (filtered.length >= 5) {
-      filtered.splice(4, 0, netOffAd[0]);
+      filtered.splice(4, 0, bookOffAd[0]);
     }
   }
 
