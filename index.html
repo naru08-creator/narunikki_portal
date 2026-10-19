@@ -694,57 +694,76 @@ function insertPopular(base) {
   return result;
 }
 
-// ===== RSS取得（修正済） =====
+// ===== RSS取得 =====
+
 async function fetchRSS() {
+  const grid = document.getElementById('article-grid');
+
+  // ===== はてなブログのRSS取得 =====
   try {
     const res = await fetch(API_URL);
+
+    if (!res.ok) {
+      throw new Error(`はてなRSS取得失敗: ${res.status}`);
+    }
+
     const data = await res.json();
 
-    if (data.status === 'ok') {
-      allArticles = data.items.map(item => {
+    if (data.status !== 'ok' || !Array.isArray(data.items)) {
+      throw new Error('はてなRSSのデータが正常ではありません');
+    }
+
+    allArticles = data.items.map(item => ({
+      ...item,
+      image: resolveArticleImage(item)
+    }));
+
+    // はてなの記事を先に表示する
+    const allBtn = document.querySelector(
+      '.tab-btn[onclick*="all"]'
+    );
+
+    filterByKeyword('all', allBtn);
+
+  } catch (error) {
+    console.error('はてなRSSの取得エラー:', error);
+
+    grid.innerHTML =
+      '<div class="status-msg">記事を読み込めませんでした。時間をおいて再読み込みしてください。</div>';
+  }
+
+  // ===== noteのRSS取得 =====
+  // note側で失敗しても、はてなの記事表示には影響させない
+  try {
+    const noteRes = await fetch(NOTE_API_URL);
+
+    if (!noteRes.ok) {
+      throw new Error(`note RSS取得失敗: ${noteRes.status}`);
+    }
+
+    const noteData = await noteRes.json();
+
+    if (noteData.status === 'ok' && Array.isArray(noteData.items)) {
+      noteArticles = noteData.items.map(item => {
+        let image = 'NoImage.png';
+
+        if (item.title.includes('めんどくさがり')) {
+          image = 'mendokusagari.png';
+        } else if (item.title.includes('深夜妄想録')) {
+          image = 'shinya.png';
+        }
+
         return {
-          ...item,
-          image: resolveArticleImage(item)
+          title: item.title,
+          link: item.link,
+          image,
+          categories: ['制作ログ']
         };
       });
-
-// ===== note RSS取得 =====
-const noteRes = await fetch(NOTE_API_URL);
-const noteData = await noteRes.json();
-
-console.log(noteData.items[0]);
-if (noteData.status === 'ok') {
-
-noteArticles = noteData.items.map(item => {
-
-// デフォルト画像
-let image = 'NoImage.png';
-
-// タイトルで分岐
-if (item.title.includes('めんどくさがり')) {
-  image = 'mendokusagari.png';
-
-} else if (item.title.includes('深夜妄想録')) {
-  image = 'shinya.png';
-}
-
-return {
-  title: item.title,
-  link: item.link,
- image: image,
-  categories: ['制作ログ']
-};
-
-});
-}
-
-      // 最初の表示を「最新情報」タブの処理として実行
-      const allBtn = document.querySelector('.tab-btn[onclick*="all"]');
-      filterByKeyword('all', allBtn);
     }
-  } catch {
-    document.getElementById('article-grid').innerHTML =
-      '<div class="status-msg">エラー</div>';
+
+  } catch (error) {
+    console.error('note RSSの取得エラー:', error);
   }
 }
 
